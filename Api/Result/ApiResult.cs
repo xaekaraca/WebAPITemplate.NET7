@@ -29,7 +29,7 @@ public class ApiResult : ObjectResult
 
     private readonly Location? _location;
 
-    private protected ApiResult(object? value, HttpHeaders headers, int statusCode, bool isSuccess) : base(value)
+    private ApiResult(object? value, HttpHeaders headers, int statusCode, bool isSuccess) : base(value)
     {
         if (isSuccess && headers.TryGetValues(HeaderNames.Location, out var locationValues))
         {

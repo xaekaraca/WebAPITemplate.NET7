@@ -23,18 +23,19 @@ namespace WebAPI.Controllers.Base
             Service = service;
         }
 
+        
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         protected abstract Task<IServiceResult<TViewModel>> ToViewModelAsync(TBaseModel entity, CancellationToken cancellationToken = default);
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        protected abstract Task<IServiceResult<List<TViewModel?>>> ToViewModelListAsync(IEnumerable<TBaseModel> entities, CancellationToken cancellationToken = default);
+        protected abstract Task<IServiceResult<List<TViewModel>>> ToViewModelListAsync(IEnumerable<TBaseModel> entities, CancellationToken cancellationToken = default);
 
         [HttpGet]
-        public virtual async Task<IServiceResult<List<TViewModel?>>> GetAsync([FromQuery] TQueryFilterModel query, CancellationToken cancellationToken = default)
+        public virtual async Task<IServiceResult<List<TViewModel>>> GetAsync([FromQuery] TQueryFilterModel query, CancellationToken cancellationToken = default)
         {
             var entities = await Service.GetAllAsync(query, cancellationToken);
             if (entities.Count == 0)
-                return ServiceResult<List<TViewModel?>>.NoContent(new List<TViewModel?>());
+                return ServiceResult<List<TViewModel>>.NoContent(new List<TViewModel>());
 
             return await ToViewModelListAsync(entities, cancellationToken);
         }

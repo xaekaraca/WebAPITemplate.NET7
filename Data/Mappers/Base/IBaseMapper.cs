@@ -2,6 +2,11 @@ using Data.Models.Base;
 
 namespace Data.Mappers.Base;
 
+/// <summary>
+/// Base mapper interface.
+/// </summary>
+/// <typeparam name="TSource"></typeparam>
+/// <typeparam name="TDestination"></typeparam>
 public interface IBaseMapper<in TSource, out TDestination> 
     where TSource:BaseModel 
     where TDestination:BaseModel
@@ -12,7 +17,7 @@ public interface IBaseMapper<in TSource, out TDestination>
 }
 
 
-/*public class UserMapper : IMapper<User, UserModel>
+/*public class UserMapper : IBaseMapper<User, UserModel>
 {
     public UserModel Map(User source)
     {

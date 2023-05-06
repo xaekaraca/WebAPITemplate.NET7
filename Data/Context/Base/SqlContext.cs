@@ -9,7 +9,7 @@ public class SqlContext : DbContext
     
     public SqlContext(DbContextOptions<SqlContext> options) : base(options) { }
     
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //implement seed data method and create method outside this class as SqlContextSeedDataCreator or something like that
     }

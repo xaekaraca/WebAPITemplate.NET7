@@ -7,6 +7,14 @@ using Util;
 
 namespace WebAPI.Services.Base;
 
+/// <summary>
+/// BaseService implements its interface and implements certain methods generically.
+/// </summary>
+/// <typeparam name="TBaseModel"></typeparam>
+/// <typeparam name="TCreateModel"></typeparam>
+/// <typeparam name="TUpdateModel"></typeparam>
+/// <typeparam name="TId"></typeparam>
+/// <typeparam name="TQueryFilterModel"></typeparam>
 public abstract class BaseService<TBaseModel,TCreateModel,TUpdateModel,TId,TQueryFilterModel> : IBaseService<TBaseModel,TCreateModel,TUpdateModel,TId,TQueryFilterModel> 
     where TCreateModel : BaseCreateModel
     where TUpdateModel : BaseUpdateModel
@@ -20,19 +28,59 @@ public abstract class BaseService<TBaseModel,TCreateModel,TUpdateModel,TId,TQuer
         _sqlContext = sqlContext;
     }
     
-    
+    /// <summary>
+    /// Gets the DbSet of the base model of the service
+    /// </summary>
+    /// <returns>Base model of the service</returns>
     protected abstract DbSet<TBaseModel> GeTBaseModelDbSet();
 
-    protected abstract Task<TBaseModel> OnBeforeCreateAsync(TCreateModel model, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Handles any method which should run before creation
+    /// </summary>
+    /// <param name="createModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Base model of the service</returns>
+    protected abstract Task<TBaseModel> OnBeforeCreateAsync(TCreateModel createModel, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Handles any method which should run after creation
+    /// </summary>
+    /// <param name="baseModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected abstract Task OnAfterCreateAsync(TBaseModel baseModel, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Handles any method which should run before update
+    /// </summary>
+    /// <param name="updateModel"></param>
+    /// <param name="baseModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected abstract Task OnBeforeUpdateAsync(TUpdateModel updateModel, TBaseModel baseModel, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Handles any method which should run after update
+    /// </summary>
+    /// <param name="baseModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected abstract Task OnAfterUpdateAsync(TBaseModel baseModel, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Handles any method which should run before delete
+    /// </summary>
+    /// <param name="baseModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected abstract Task OnBeforeDeleteAsync(TBaseModel baseModel, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Handles any method which should run after delete
+    /// </summary>
+    /// <param name="baseModel"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     protected abstract Task OnAfterDeleteAsync(TBaseModel baseModel, CancellationToken cancellationToken = default);
     
     public virtual async Task<TBaseModel?> GetByIdAsync(TId id, CancellationToken cancellationToken = default)
@@ -47,7 +95,7 @@ public abstract class BaseService<TBaseModel,TCreateModel,TUpdateModel,TId,TQuer
         }
     }
 
-    public virtual async Task<List<TBaseModel>> GetAllAsync(TQueryFilterModel queryFilterModel, CancellationToken cancellationToken = default)
+    public virtual async Task<List<TBaseModel>> GetAllAsync(TQueryFilterModel filter, CancellationToken cancellationToken = default)
     {
         try
         {
